@@ -7,12 +7,12 @@ class DAOProfessor implements IDAOProfessor {
   late Database _db;
   final sqlInserir = 
   '''
-    INSERT INTO professor (nome, descricao, CPF, status)
-    VALUES (?,?,?,?)
+    INSERT INTO professor (nome, descricao, CPF, url_avatar, status)
+    VALUES (?,?,?,?,?)
   ''';
   final sqlAlterar = 
   '''
-    UPDATE professor SET nome=?, descricao=?, CPF=?, status=?
+    UPDATE professor SET nome=?, descricao=?, CPF=?, url_avatar=?, status=?
     WHERE id = ?
   ''';
   final sqlAlterarStatus = 
@@ -32,7 +32,7 @@ class DAOProfessor implements IDAOProfessor {
   @override
   Future<DTOProfessor> salvar(DTOProfessor dto) async {
     _db = await Conexao.iniciar();
-    int id = await _db.rawInsert(sqlInserir, [dto.nome, dto.descricao, dto.CPF, dto.status]);
+    int id = await _db.rawInsert(sqlInserir, [dto.nome, dto.descricao, dto.cpf, dto.urlAvatar, dto.status]);
     dto.id = id;
     return dto;
   }
@@ -47,19 +47,20 @@ class DAOProfessor implements IDAOProfessor {
   @override
   Future<DTOProfessor> alterar(DTOProfessor dto) async {
     _db = await Conexao.iniciar();
-    await _db.rawUpdate(sqlAlterar,[dto.nome,dto.descricao,dto.CPF,dto.status,dto.id]);
+    await _db.rawUpdate(sqlAlterar,[dto.nome,dto.descricao,dto.cpf,dto.urlAvatar,dto.status,dto.id]);
     return dto;
   }
   
   @override
   Future<DTOProfessor> consultarPorId(int id) async {
     _db = await Conexao.iniciar();
-    var resultado = (await _db.rawQuery(sqlConsultarPorId)).first;
+    var resultado = (await _db.rawQuery(sqlConsultarPorId,[id])).first;
     DTOProfessor professor = DTOProfessor(
       id: resultado['id'], 
       nome: resultado['nome'].toString(), 
       descricao: resultado['descricao'].toString(), 
-      CPF: resultado['CPF'].toString(), 
+      cpf: resultado['CPF'].toString(), 
+      urlAvatar: resultado['url_avatar'].toString(), 
       status: resultado['status'].toString()
     );
     return professor;
@@ -75,7 +76,8 @@ class DAOProfessor implements IDAOProfessor {
         id: linha['id'], 
         nome: linha['nome'].toString(), 
         descricao: linha['descricao'].toString(), 
-        CPF: linha['CPF'].toString(), 
+        cpf: linha['CPF'].toString(), 
+        urlAvatar: linha['url_avatar'].toString(), 
         status: linha['status'].toString()
       );
     });

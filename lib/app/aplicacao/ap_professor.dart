@@ -4,24 +4,24 @@ import 'package:gestao_notas/app/dominio/interface/i_dao_professor.dart';
 import 'package:gestao_notas/app/dominio/professor.dart';
 
 class APProfessor{
-  late Professor dominio;
   late IDAOProfessor dao;
-  late DTOProfessor dto;
+  late Professor dominio;
+
   APProfessor(){
     dao = DAOProfessor();
-    dominio = Professor(id: dto.id,nome: dto.nome, CPF: dto.CPF, status: dto.status, dao: dao);
+    dominio = Professor(dao: dao);
+  }
+    
+  Future<DTOProfessor> salvar(DTOProfessor dto) async {
+    return await dominio.salvar(dto);
   }
 
-  Future<DTOProfessor> salvar() async {
-    return await dominio.salvar();
+  Future<DTOProfessor> alterar(dynamic id) async {
+    return await dominio.alterar(id);
   }
 
-  Future<DTOProfessor> alterar() async {
-    return await dominio.alterar();
-  }
-
-  Future<bool> excluir() async {
-    await dominio.alterar();
+  Future<bool> excluir(dynamic id) async {
+    await dominio.alterar(id);
     return true;
   }
 

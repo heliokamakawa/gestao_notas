@@ -1,8 +1,9 @@
 class DTOProfessor{
-  dynamic? id;
+  dynamic id;
   final String nome;
   final String? descricao;
-  final String CPF;
+  final String cpf;
+  final String? urlAvatar;
   final String status;
-  DTOProfessor({this.id, required this.nome, this.descricao, required this.CPF, this.status = 'A'});
+  DTOProfessor({this.id, required this.nome, this.descricao, required this.cpf, this.urlAvatar, this.status = 'A'});
 }
