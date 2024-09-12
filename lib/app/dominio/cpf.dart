@@ -5,6 +5,9 @@ class CPF{
     eVazio(cpf);
     cpf = cpf.replaceAll(RegExp(r'\D'), '');
     numerosCPF = cpf.split('').map(int.parse).toList();
+  }
+
+  eValido(){
     eOnzeNumeros();
     eNumeroDiferente();
     eDigitoCorreto();

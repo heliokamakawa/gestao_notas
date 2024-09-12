@@ -1,22 +1,37 @@
-
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gestao_notas/app/banco/sqlite/script.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-Future main() async {
-  setUpAll(){
-    WidgetsFlutterBinding.ensureInitialized();
+main()async{
+  setUpAll((){
     sqfliteFfiInit();
-    DatabaseFactory databaseFactory = databaseFactoryFfi;
-  }
-  test('teste script criar tabela', ()async{
+    databaseFactory = databaseFactoryFfi;
+    
+  });
+
+  test('Teste do script para criar tabelas', () async {
     var db = await openDatabase(inMemoryDatabasePath, version: 1,
-        onCreate: (db, version) async {
-      await db.execute(criarTabela);
-    });
-    await db.rawInsert(registro1);
-    expect(await db.query('professor'), [{'id':1,'nome':'Joaquim Silva','CPF':'174.884.480-65','status':'A'}]);
+      onCreate: (db, version) async {
+        expect(
+          ()=>criarTabelas.forEach(db.execute),
+          returnsNormally
+        );
+      }
+    );
+    await db.close();
+  });
+
+  test('Teste do script para inserir registros', () async {
+    var db = await openDatabase(inMemoryDatabasePath, version: 1,
+      onCreate: (db, version) async {
+        criarTabelas.forEach(db.execute);
+        expect(
+          ()=>insercoes.forEach(db.execute),
+          returnsNormally
+        );
+      }
+    );
+    await db.close();
   });
 }

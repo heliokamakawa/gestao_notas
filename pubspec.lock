@@ -117,7 +117,7 @@ packages:
     source: hosted
     version: "1.7.0"
   path:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path
       url: "https://pub.dartlang.org"
@@ -157,7 +157,7 @@ packages:
     source: hosted
     version: "2.1.1+1"
   sqlite3:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: sqlite3
       url: "https://pub.dartlang.org"
